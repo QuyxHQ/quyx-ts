@@ -22,7 +22,7 @@ export interface QuyxApi {
   import({ _id }: { _id: string }): Promise<QuyxResponse<undefined>>;
   findUser({ address }: { address: string }): Promise<QuyxResponse<QuyxSDKUser>>;
   allUsers(options?: PagingProps): Promise<QuyxPaginationResponse<QuyxSDKUser[]>>;
-  diconnect(): Promise<QuyxResponse<undefined>>;
+  disconnect(): Promise<QuyxResponse<undefined>>;
   logout(): Promise<QuyxResponse<undefined>>;
 }
 
@@ -119,7 +119,7 @@ export class Quyx implements QuyxApi {
     return resp;
   }
 
-  async diconnect(): Promise<QuyxResponse<undefined>> {
+  async disconnect(): Promise<QuyxResponse<undefined>> {
     const resp = await this.apiSdk.getInstance().delete("/sdk/disconnect");
     return resp;
   }

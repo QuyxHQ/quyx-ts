@@ -70,11 +70,11 @@ function injectQuyx({ apiKey, req }: { apiKey: string; req: Request }): Injected
       return resp;
     },
 
-    diconnect: async function () {
+    disconnect: async function () {
       const { accessToken, refreshToken } = getAccessAndRefreshToken(req);
 
       const quyx = new Quyx({ apiKey, accessToken, refreshToken });
-      const resp = quyx.diconnect();
+      const resp = quyx.disconnect();
       return resp;
     },
 

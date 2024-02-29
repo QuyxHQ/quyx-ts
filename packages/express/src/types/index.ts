@@ -26,6 +26,6 @@ export type InjectedQuyx = {
   import({ _id }: { _id: string }): Promise<QuyxResponse<undefined>>;
   findUser({ address }: { address: string }): Promise<QuyxResponse<QuyxSDKUser>>;
   allUsers(options?: Required<PagingProps>): Promise<QuyxPaginationResponse<QuyxSDKUser[]>>;
-  diconnect(): Promise<QuyxResponse<undefined>>;
+  disconnect(): Promise<QuyxResponse<undefined>>;
   logout(): Promise<QuyxResponse<undefined>>;
 };
