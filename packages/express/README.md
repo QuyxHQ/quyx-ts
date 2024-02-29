@@ -120,4 +120,7 @@ export default app;
 ```
 
 To run code run this in terminal:
-`ts-node  index.ts`
+
+```sh
+ts-node  index.ts
+```

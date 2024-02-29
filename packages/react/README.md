@@ -4,6 +4,6 @@
 <br />
 </p>
 
-<h1 align="center">Quyx TypeScript Monorepo</h1>
+<h1 align="center">Quyx TypeScript React</h1>
 
 ## In progress
