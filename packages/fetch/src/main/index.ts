@@ -61,7 +61,7 @@ export class Quyx implements QuyxApi {
     };
 
     const resp = await this.apiSdk.getInstance().get("/session/nonce");
-    return resp.data as QuyxResponse<Response | undefined>;
+    return resp as QuyxResponse<Response | undefined>;
   }
 
   async init(options: QuyxInitProps): Promise<SiweMessage> {

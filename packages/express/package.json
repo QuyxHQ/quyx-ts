@@ -12,6 +12,9 @@
     "access": "public"
   },
   "exports": {
+    ".": {
+      "default": "./dist/index.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -38,15 +41,17 @@
   "bugs": {
     "url": "https://github.com/QuyxHQ/quyx-ts/issues"
   },
-  "devDependencies": {
+  "dependencies": {
     "@quyx/fetch": "^0.1.1",
+    "express-session": "^1.18.0",
+    "siwe": "^2.1.4"
+  },
+  "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.18.0",
     "@types/jest": "^29.5.12",
     "express": "^4.18.3",
-    "express-session": "^1.18.0",
     "jest": "^29.7.0",
-    "siwe": "^2.1.4",
     "typescript": "^5.3.3"
   },
   "peerDependencies": {
