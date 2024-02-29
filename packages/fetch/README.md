@@ -4,7 +4,7 @@
 <br />
 </p>
 
-<h1 align="center">Quyx TypeScript Monorepo</h1>
+<h1 align="center">Quyx TypeScript Fetch</h1>
 
 ## Installation
 
@@ -49,17 +49,17 @@ const quyx = new Quyx({ apiKey: process.env.QUYX_API_KEY });
 
 ### 2. Methods on the class
 
-| Method                         | Description                                                                                                                                   | Props                 | Response                                |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | --------------------------------------- |
-| init                           | prepares the SIWE (Sign In With Ethereum) message to be signed by an EOA (Externally Owned Account), to prove ownership before gaining access | `QuyxInitProps `      | `SiweMessage`                           |
-| siwe                           | checks and ensures that the wallet connected is the signer of the initialized message                                                         | `QuyxSIWEProps `      | ` QuyxResponse<TokensProps>`            |
-| whoami <br/> _(protected)_     | gets the info of the current logged in user                                                                                                   | --                    | `QuyxResponse<QuyxSDKUser>`             |
-| cards <br/> _(protected)_      | gets all the cards of the current logged in user                                                                                              | `PagingProps`         | `QuyxPaginationResponse<QuyxCard[]>`    |
-| import <br/> _(protected)_     | updates the card imported by the user (i.e. the user preferred card)                                                                          | `{ _id:  string }`    | `QuyxResponse<undefined>`               |
-| findUser                       | gets the info of a user on your Quyx app from their address                                                                                   | `{ address: string }` | `QuyxResponse<QuyxSDKUser>>`            |
-| allUsers                       | returns all the users registered on your app                                                                                                  | `PagingProps`         | `QuyxPaginationResponse<QuyxSDKUser[]>` |
-| disconnect <br/> _(protected)_ | \*be carefully when calling this method as it will delete the user account off your app                                                       | --                    | `QuyxResponse<undefined>`               |
-| logout <br/> _(protected)_     | destroys the current session of the user                                                                                                      | --                    | `QuyxResponse<undefined>`               |
+| Method                         | Description                                                                                                                                   | Props              | Response                                |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | --------------------------------------- |
+| init                           | prepares the SIWE (Sign In With Ethereum) message to be signed by an EOA (Externally Owned Account), to prove ownership before gaining access | `QuyxInitProps `   | `SiweMessage`                           |
+| siwe                           | checks and ensures that the wallet connected is the signer of the initialized message                                                         | `QuyxSIWEProps `   | ` QuyxResponse<TokensProps>`            |
+| whoami <br/> _(protected)_     | gets the info of the current logged in user                                                                                                   | --                 | `QuyxResponse<QuyxSDKUser>`             |
+| cards <br/> _(protected)_      | gets all the cards of the current logged in user                                                                                              | `PagingProps`      | `QuyxPaginationResponse<QuyxCard[]>`    |
+| import <br/> _(protected)_     | updates the card imported by the user (i.e. the user preferred card)                                                                          | `{_id:string}`     | `QuyxResponse<undefined>`               |
+| findUser                       | gets the info of a user on your Quyx app from their address                                                                                   | `{address:string}` | `QuyxResponse<QuyxSDKUser>>`            |
+| allUsers                       | returns all the users registered on your app                                                                                                  | `PagingProps`      | `QuyxPaginationResponse<QuyxSDKUser[]>` |
+| disconnect <br/> _(protected)_ | \*be carefully when calling this method as it will delete the user account off your app                                                       | --                 | `QuyxResponse<undefined>`               |
+| logout <br/> _(protected)_     | destroys the current session of the user                                                                                                      | --                 | `QuyxResponse<undefined>`               |
 
 <font color="dodgerblue">**💡 NOTE:**</font> for routes with the **protected** badge, the user `accessToken` and `refreshToken` must be passed when creating an instance of the class for this to work
 
