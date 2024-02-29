@@ -51,5 +51,6 @@
   },
   "peerDependencies": {
     "@quyx/fetch": "*"
-  }
+  },
+  "gitHead": "2a40c268ab55b5d4d51badde29075b1a97d0c7a0"
 }
