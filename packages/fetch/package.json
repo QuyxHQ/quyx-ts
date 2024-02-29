@@ -1,0 +1,46 @@
+{
+  "name": "@quyx/fetch",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Quyx library for interacting with our SDK endpoint",
+  "author": "Morifeoluwa Adedeji <momoreoluwaadedeji@gmail.com>",
+  "homepage": "https://github.com/QuyxHQ/quyx-ts#readme",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG",
+    "LICENSE"
+  ],
+  "keywords": [
+    "quyx",
+    "cards",
+    "web3",
+    "identity"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuyxHQ/quyx-ts.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "clean": "rm -rf dist/"
+  },
+  "bugs": {
+    "url": "https://github.com/QuyxHQ/quyx-ts/issues"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "axios": "^1.6.7",
+    "ethers": "^5.6.8",
+    "jest": "^29.7.0",
+    "siwe": "^2.1.4",
+    "typescript": "^5.3.3"
+  }
+}

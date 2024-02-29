@@ -1,0 +1,52 @@
+{
+  "name": "@quyx/express",
+  "version": "0.0.0",
+  "private": false,
+  "description": "Quyx library for express apps",
+  "author": "Morifeoluwa Adedeji <momoreoluwaadedeji@gmail.com>",
+  "homepage": "https://github.com/QuyxHQ/quyx-ts#readme",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG",
+    "LICENSE"
+  ],
+  "keywords": [
+    "quyx",
+    "cards",
+    "web3",
+    "identity"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuyxHQ/quyx-ts.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "clean": "rm -rf dist/"
+  },
+  "bugs": {
+    "url": "https://github.com/QuyxHQ/quyx-ts/issues"
+  },
+  "devDependencies": {
+    "@quyx/fetch": "*",
+    "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.0",
+    "@types/jest": "^29.5.12",
+    "express": "^4.18.3",
+    "express-session": "^1.18.0",
+    "jest": "^29.7.0",
+    "siwe": "^2.1.4",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@quyx/fetch": "*"
+  }
+}
