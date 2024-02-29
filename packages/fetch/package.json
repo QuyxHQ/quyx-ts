@@ -5,7 +5,7 @@
   "description": "Quyx library for interacting with our SDK endpoint",
   "author": "Morifeoluwa Adedeji <momoreoluwaadedeji@gmail.com>",
   "homepage": "https://github.com/QuyxHQ/quyx-ts#readme",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
