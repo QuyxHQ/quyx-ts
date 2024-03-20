@@ -1,6 +1,6 @@
 {
   "name": "@quyx/siws",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": false,
   "description": "Quyx library for preparing and verifying messages for Sign In With Solana (SIWS)",
   "author": "Adedeji Morifeoluwa <141498118+iamthe-nerdyDev@users.noreply.github.com>",
