@@ -1,6 +1,6 @@
 {
   "name": "@quyx/fetch",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "description": "Quyx library for interacting with our SDK endpoint",
   "author": "Morifeoluwa Adedeji <momoreoluwaadedeji@gmail.com>",
@@ -42,7 +42,7 @@
     "url": "https://github.com/QuyxHQ/quyx-ts/issues"
   },
   "dependencies": {
-    "@quyx/siws": "^0.1.4",
+    "@quyx/siws": "^0.1.5",
     "axios": "^1.6.7"
   },
   "devDependencies": {

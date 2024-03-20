@@ -1,6 +1,6 @@
 {
   "name": "@quyx/express",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "description": "Quyx library for express apps",
   "author": "Morifeoluwa Adedeji <momoreoluwaadedeji@gmail.com>",
@@ -42,8 +42,8 @@
     "url": "https://github.com/QuyxHQ/quyx-ts/issues"
   },
   "dependencies": {
-    "@quyx/fetch": "^0.1.4",
-    "@quyx/siws": "^0.1.4",
+    "@quyx/fetch": "^0.1.5",
+    "@quyx/siws": "^0.1.5",
     "express-session": "^1.18.0"
   },
   "devDependencies": {
