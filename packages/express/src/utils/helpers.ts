@@ -22,9 +22,9 @@ function injectQuyx({ apiKey, req }: { apiKey: string; req: Request }): Injected
       return resp;
     },
 
-    siwe: async function (options) {
+    siws: async function (options) {
       const quyx = new Quyx({ apiKey });
-      const resp = await quyx.siwe(options);
+      const resp = await quyx.siws(options);
 
       if (!resp.error && resp.data) {
         const { accessToken, refreshToken } = resp.data.data;

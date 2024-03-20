@@ -1,14 +1,13 @@
 import {
   PagingProps,
   QuyxCard,
-  QuyxInitProps,
   QuyxPaginationResponse,
   QuyxResponse,
   QuyxSDKUser,
-  QuyxSIWEProps,
   TokensProps,
+  SIWSProps,
 } from "@quyx/fetch";
-import { SiweMessage } from "siwe";
+import { QuyxSIWS, QuyxSIWSProps } from "@quyx/siws";
 
 declare global {
   namespace Express {
@@ -19,8 +18,8 @@ declare global {
 }
 
 export type InjectedQuyx = {
-  init: (options: QuyxInitProps) => Promise<SiweMessage>;
-  siwe(options: QuyxSIWEProps): Promise<QuyxResponse<TokensProps>>;
+  init: (options: QuyxSIWSProps) => Promise<QuyxSIWS>;
+  siws(options: SIWSProps): Promise<QuyxResponse<TokensProps>>;
   whoami: () => Promise<QuyxResponse<QuyxSDKUser>>;
   cards(options: PagingProps): Promise<QuyxPaginationResponse<QuyxCard[]>>;
   import({ _id }: { _id: string }): Promise<QuyxResponse<undefined>>;

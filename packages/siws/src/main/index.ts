@@ -4,8 +4,8 @@ import { QuyxSIWSProps } from "../types";
 import { dateUTC } from "../utils/helper";
 
 export interface QuyxSIWS {
-  prepare(): string;
-  validate(signature: string): boolean;
+  prepare(): Uint8Array;
+  validate(signature: Uint8Array): boolean;
 }
 
 export class QuyxSIWS implements QuyxSIWS {
@@ -30,13 +30,12 @@ export class QuyxSIWS implements QuyxSIWS {
   }
 
   prepare() {
-    return `${this.domain}${this.statement}\n\nNonce: ${this.nonce}\nChain ID: ${this.chainId}\nIssued At: ${this.issuedAt}\nExpiration Time: ${this.expirationTime}`;
+    const msg = `${this.domain}${this.statement}\n\nNonce: ${this.nonce}\nChain ID: ${this.chainId}\nIssued At: ${this.issuedAt}\nExpiration Time: ${this.expirationTime}`;
+    return new TextEncoder().encode(msg);
   }
 
-  validate(signature: string) {
+  validate(signature: Uint8Array) {
     const msg = this.prepare();
-    const signatureUint8 = bs58.decode(signature);
-    const msgUint8 = new TextEncoder().encode(msg);
     const pubKeyUint8 = bs58.decode(this.address);
 
     const UTC_now = dateUTC().getTime();
@@ -46,6 +45,6 @@ export class QuyxSIWS implements QuyxSIWS {
     if (UTC_now < UTC_issuedAt) throw new Error("issuedAt is in future");
     if (UTC_now >= UTC_expirationTime) throw new Error("expired! request a new message");
 
-    return nacl.sign.detached.verify(msgUint8, signatureUint8, pubKeyUint8);
+    return nacl.sign.detached.verify(msg, signature, pubKeyUint8);
   }
 }

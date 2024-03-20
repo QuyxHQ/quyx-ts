@@ -3,20 +3,19 @@ import {
   TokensProps,
   QuyxConstructorProps,
   QuyxResponse,
-  QuyxInitProps,
-  QuyxSIWEProps,
+  SIWSProps,
   QuyxSDKUser,
   QuyxPaginationResponse,
   QuyxCard,
   PagingProps,
 } from "../types";
 import ApiHttpClient from "../utils/api";
-import { SiweMessage } from "siwe";
+import { QuyxSIWS, QuyxSIWSProps } from "@quyx/siws";
 import { isBrowser } from "../utils/helpers";
 
 export interface QuyxApi {
-  init(options: QuyxInitProps): Promise<SiweMessage>;
-  siwe(options: QuyxSIWEProps): Promise<QuyxResponse<TokensProps>>;
+  init(options: QuyxSIWSProps): Promise<QuyxSIWS>;
+  siws(options: SIWSProps): Promise<QuyxResponse<TokensProps>>;
   whoami(): Promise<QuyxResponse<QuyxSDKUser>>;
   cards(options?: PagingProps): Promise<QuyxPaginationResponse<QuyxCard[]>>;
   import({ _id }: { _id: string }): Promise<QuyxResponse<undefined>>;
@@ -53,43 +52,39 @@ export class Quyx implements QuyxApi {
     this.apiSdk = new ApiHttpClient(this.keys, this.tokens);
   }
 
-  private async getNonce() {
+  private async getNonce({ address }: { address: string }) {
     type Response = {
       nonce: string;
       issuedAt: string;
       expirationTime: string;
     };
 
-    const resp = await this.apiSdk.getInstance().get("/session/nonce");
+    const resp = await this.apiSdk.getInstance().get(`/session/nonce/${address}`);
     return resp as QuyxResponse<Response | undefined>;
   }
 
-  async init(options: QuyxInitProps): Promise<SiweMessage> {
-    const { error, data } = await this.getNonce();
-    if (error) throw new Error(data.message ?? "unable to retrieve nonce");
+  async init(options: QuyxSIWSProps): Promise<QuyxSIWS> {
+    const { error, data } = await this.getNonce({ address: options.address });
+    if (error) throw new Error(data.message || "unable to retrieve nonce");
 
-    const message = new SiweMessage({
+    const message = new QuyxSIWS({
       domain: options.domain ?? isBrowser() ? document.location.host : undefined,
       address: options.address,
       chainId: options.chainId,
-      uri: options.uri ?? isBrowser() ? document.location.origin : undefined,
-      version: options.version ?? "1",
-      statement: options.statement ?? "Sign this message to verify ownership of wallet",
-      nonce: data.data.nonce,
-      expirationTime: data.data.expirationTime,
-      issuedAt: data.data.issuedAt,
+      statement: options.statement,
+      ...data.data,
     });
 
     return message;
   }
 
-  async siwe(options: QuyxSIWEProps): Promise<QuyxResponse<TokensProps>> {
+  async siws(options: SIWSProps): Promise<QuyxResponse<TokensProps>> {
     const resp = await this.apiSdk.getInstance().post("/sdk/login", options);
     return resp;
   }
 
   async whoami(): Promise<QuyxResponse<QuyxSDKUser>> {
-    const resp = await this.apiSdk.getInstance().get("/sdk/current");
+    const resp = await this.apiSdk.getInstance().get("/sdk/whoami");
     return resp;
   }
 

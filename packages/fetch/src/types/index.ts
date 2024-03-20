@@ -1,4 +1,4 @@
-import { SiweMessage } from "siwe";
+import { QuyxSIWSProps } from "@quyx/siws";
 
 export type TokensProps = {
   accessToken: string;
@@ -36,18 +36,8 @@ export type QuyxPaginationResponse<T> = QuyxResponse<T> & {
   };
 };
 
-export type QuyxInitProps = {
-  address: string;
-  chainId: number;
-  domain?: string;
-  uri?: string;
-  statement?: string;
-  version?: string;
-};
-
-export type QuyxSIWEProps = {
-  address: string;
-  message: SiweMessage;
+export type SIWSProps = {
+  message: QuyxSIWSProps;
   signature: string;
 };
 
