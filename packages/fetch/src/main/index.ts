@@ -1,34 +1,38 @@
 import {
-  AccessKeysProps,
-  TokensProps,
   QuyxConstructorProps,
   QuyxResponse,
-  SIWSProps,
+  QuyxSIWSProps,
   QuyxSDKUser,
   QuyxPaginationResponse,
   QuyxCard,
   PagingProps,
+  QuyxInitProps,
+  QuyxApp,
 } from "../types";
 import ApiHttpClient from "../utils/api";
-import { QuyxSIWS, QuyxSIWSProps } from "@quyx/siws";
+import { QuyxSIWS, signatureToString } from "@quyx/siws";
 import { isBrowser } from "../utils/helpers";
 
-export interface QuyxApi {
-  init(options: QuyxSIWSProps): Promise<QuyxSIWS>;
-  siws(options: SIWSProps): Promise<QuyxResponse<TokensProps>>;
+export interface QuyxInterface {
+  appInfo(): Promise<QuyxResponse<QuyxApp>>;
+  init({ domain, address, chainId, statement }: QuyxInitProps): Promise<QuyxSIWS>;
+  siws({
+    message,
+    signature,
+  }: QuyxSIWSProps): Promise<QuyxResponse<{ accessToken: string; refreshToken: string }>>;
   whoami(): Promise<QuyxResponse<QuyxSDKUser>>;
-  cards(options?: PagingProps): Promise<QuyxPaginationResponse<QuyxCard[]>>;
+  cards({ limit, page }: PagingProps): Promise<QuyxPaginationResponse<QuyxCard[]>>;
   import({ _id }: { _id: string }): Promise<QuyxResponse<undefined>>;
-  findUser({ address }: { address: string }): Promise<QuyxResponse<QuyxSDKUser>>;
-  allUsers(options?: PagingProps): Promise<QuyxPaginationResponse<QuyxSDKUser[]>>;
+  findUser({ param }: { param: string }): Promise<QuyxResponse<QuyxSDKUser>>;
+  allUsers(options?: Required<PagingProps>): Promise<QuyxPaginationResponse<QuyxSDKUser[]>>;
   disconnect(): Promise<QuyxResponse<undefined>>;
   logout(): Promise<QuyxResponse<undefined>>;
 }
 
-export class Quyx implements QuyxApi {
+export class Quyx implements QuyxInterface {
   private apiSdk: ApiHttpClient;
-  private keys: AccessKeysProps;
-  private tokens?: TokensProps;
+  private keys: { clientId?: string; apiKey?: string };
+  private tokens?: { accessToken: string; refreshToken: string };
 
   constructor(options?: QuyxConstructorProps) {
     if (!options || (!options.apiKey && !options.clientId)) {
@@ -53,74 +57,84 @@ export class Quyx implements QuyxApi {
   }
 
   private async getNonce({ address }: { address: string }) {
-    type Response = {
-      nonce: string;
-      issuedAt: string;
-      expirationTime: string;
-    };
-
     const resp = await this.apiSdk.getInstance().get(`/session/nonce/${address}`);
-    return resp as QuyxResponse<Response | undefined>;
+    return resp as QuyxResponse<
+      | {
+          nonce: string;
+          issuedAt: string;
+          expirationTime: string;
+        }
+      | undefined
+    >;
   }
 
-  async init(options: QuyxSIWSProps): Promise<QuyxSIWS> {
-    const { error, data } = await this.getNonce({ address: options.address });
-    if (error) throw new Error(data.message || "unable to retrieve nonce");
+  async appInfo() {
+    const resp = await this.apiSdk.getInstance().get("/sdk/info");
+    return resp as Promise<QuyxResponse<QuyxApp>>;
+  }
+
+  async init({ domain, address, chainId, statement }: QuyxInitProps) {
+    const { error, data } = await this.getNonce({ address });
+    if (error || !data.status) throw new Error(data.message || "unable to retrieve nonce");
 
     const message = new QuyxSIWS({
-      domain: options.domain ?? isBrowser() ? document.location.host : undefined,
-      address: options.address,
-      chainId: options.chainId,
-      statement: options.statement,
+      domain,
+      address,
+      chainId,
+      statement,
       ...data.data,
     });
 
     return message;
   }
 
-  async siws(options: SIWSProps): Promise<QuyxResponse<TokensProps>> {
-    const resp = await this.apiSdk.getInstance().post("/sdk/login", options);
-    return resp;
-  }
-
-  async whoami(): Promise<QuyxResponse<QuyxSDKUser>> {
-    const resp = await this.apiSdk.getInstance().get("/sdk/whoami");
-    return resp;
-  }
-
-  async cards(options?: PagingProps): Promise<QuyxPaginationResponse<QuyxCard[]>> {
+  async siws({ message, signature }: QuyxSIWSProps) {
     const resp = await this.apiSdk
       .getInstance()
-      .get(`/sdk/cards?limit=${options ? options.limit : 10}&page=${options ? options.page : 1}`);
+      .post("/sdk/login", { message, signature: signatureToString(signature) });
 
-    return resp;
+    return resp as Promise<QuyxResponse<{ accessToken: string; refreshToken: string }>>;
   }
 
-  async import({ _id }: { _id: string }): Promise<QuyxResponse<undefined>> {
+  async whoami() {
+    const resp = await this.apiSdk.getInstance().get("/sdk/whoami");
+    return resp as Promise<QuyxResponse<QuyxSDKUser>>;
+  }
+
+  async cards({ limit = 10, page = 1 }: PagingProps) {
+    const resp = await this.apiSdk.getInstance().get(`/sdk/cards?limit=${limit}&page=${page}`);
+    return resp as Promise<QuyxPaginationResponse<QuyxCard[]>>;
+  }
+
+  async import({ _id }: { _id: string }) {
     const resp = await this.apiSdk.getInstance().put(`/sdk/change/${_id}`);
-    return resp;
+    return resp as Promise<QuyxResponse<undefined>>;
   }
 
-  async findUser({ address }: { address: string }): Promise<QuyxResponse<QuyxSDKUser>> {
-    const resp = await this.apiSdk.getInstance().get(`/sdk/user/single/${address}`);
-    return resp;
+  async findUser({ param }: { param: string }) {
+    if (!this.keys.apiKey) throw new Error("apiKey is needed to access this route");
+
+    const resp = await this.apiSdk.getInstance().get(`/sdk/user/single/${param}`);
+    return resp as Promise<QuyxResponse<QuyxSDKUser>>;
   }
 
-  async allUsers(options?: Required<PagingProps>): Promise<QuyxPaginationResponse<QuyxSDKUser[]>> {
+  async allUsers(options?: Required<PagingProps>) {
+    if (!this.keys.apiKey) throw new Error("apiKey is needed to access this route");
+
     let endpoint = `/sdk/users/all`;
     if (options) endpoint = `/sdk/users/all?page=${options.page}&limit=${options.limit}`;
 
     const resp = await this.apiSdk.getInstance().get(endpoint);
-    return resp;
+    return resp as Promise<QuyxPaginationResponse<QuyxSDKUser[]>>;
   }
 
-  async disconnect(): Promise<QuyxResponse<undefined>> {
+  async disconnect() {
     const resp = await this.apiSdk.getInstance().delete("/sdk/disconnect");
-    return resp;
+    return resp as Promise<QuyxResponse<undefined>>;
   }
 
-  async logout(): Promise<QuyxResponse<undefined>> {
+  async logout() {
     const resp = await this.apiSdk.getInstance().delete("/session");
-    return resp;
+    return resp as Promise<QuyxResponse<undefined>>;
   }
 }

@@ -1,3 +1,3 @@
-const ENDPOINT_URL = "https://quyx-core.onrender.com";
+const ENDPOINT_URL = "https://api.quyx.xyz";
 
 export default { ENDPOINT_URL };

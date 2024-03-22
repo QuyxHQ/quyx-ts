@@ -1,20 +1,20 @@
-import { QuyxSIWSProps } from "@quyx/siws";
-
-export type TokensProps = {
-  accessToken: string;
-  refreshToken: string;
-};
-
-export type AccessKeysProps = {
-  clientId?: string;
-  apiKey?: string;
-};
-
 export type QuyxConstructorProps = {
   apiKey?: string;
   clientId?: string;
   accessToken?: string;
   refreshToken?: string;
+};
+
+export type QuyxInitProps = {
+  domain: string;
+  address: string;
+  chainId: string;
+  statement?: string;
+};
+
+export type QuyxSIWSProps = {
+  message: QuyxInitProps;
+  signature: Uint8Array;
 };
 
 export type QuyxResponse<T> = {
@@ -34,11 +34,6 @@ export type QuyxPaginationResponse<T> = QuyxResponse<T> & {
     skip: number;
     total: number;
   };
-};
-
-export type SIWSProps = {
-  message: QuyxSIWSProps;
-  signature: string;
 };
 
 export type PagingProps = {
@@ -62,6 +57,18 @@ export type QuyxCard = Base & {
   bio: string;
   description: string | null;
   isForSale: boolean;
+};
+
+export type QuyxApp = Base & {
+  clientID: string;
+  name: string;
+  description: string;
+  url: string;
+  allowedDomains: string[] | null;
+  allowedBundleIDs: string[] | null;
+  blacklistedAddresses: string[] | null;
+  whitelistedAddresses: string[] | null;
+  isActive: boolean;
 };
 
 type Base = {

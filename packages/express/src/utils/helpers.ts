@@ -1,21 +1,30 @@
 import { Request } from "express";
 import { InjectedQuyx } from "../types";
-import { Quyx, TokensProps } from "@quyx/fetch";
+import { Quyx } from "@quyx/fetch";
 
 function getAccessAndRefreshToken(req: Request) {
-  const accessToken = (req.session as any).accessToken;
-  const refreshToken = (req.session as any).refreshToken;
+  const accessToken = (req.session as any).accessToken as string | undefined;
+  const refreshToken = (req.session as any).refreshToken as string | undefined;
 
   return { accessToken, refreshToken };
 }
 
-function setAccessAndRefreshToken(req: Request, tokens: TokensProps) {
+function setAccessAndRefreshToken(
+  req: Request,
+  tokens: { accessToken?: string; refreshToken?: string }
+) {
   (req.session as any).accessToken = tokens.accessToken;
   (req.session as any).refreshToken = tokens.refreshToken;
 }
 
 function injectQuyx({ apiKey, req }: { apiKey: string; req: Request }): InjectedQuyx {
   return {
+    appInfo: async function () {
+      const quyx = new Quyx({ apiKey });
+      const resp = await quyx.appInfo();
+      return resp;
+    },
+
     init: async function (options) {
       const quyx = new Quyx({ apiKey });
       const resp = await quyx.init(options);
@@ -58,9 +67,9 @@ function injectQuyx({ apiKey, req }: { apiKey: string; req: Request }): Injected
       return resp;
     },
 
-    findUser: async function ({ address }) {
+    findUser: async function ({ param }) {
       const quyx = new Quyx({ apiKey });
-      const resp = await quyx.findUser({ address });
+      const resp = await quyx.findUser({ param });
       return resp;
     },
 

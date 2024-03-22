@@ -4,7 +4,7 @@ import { injectQuyx } from "../utils/helpers";
 
 function sessionMiddleware(options?: session.SessionOptions & { secret: string }) {
   return session({
-    secret: "__QUYX__DEFAULT_SECRET",
+    secret: "__QUYX__DEFAULT_SECRET__",
     ...(options || {}),
     resave: false,
     saveUninitialized: true,

@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "@quyx/fetch": "^0.1.5",
-    "@quyx/siws": "^0.1.5",
     "express-session": "^1.18.0"
   },
   "devDependencies": {

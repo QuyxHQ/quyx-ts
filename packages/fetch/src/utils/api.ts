@@ -1,10 +1,12 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { HttpClient } from "./http";
 import constants from "./constants";
-import { AccessKeysProps, TokensProps } from "../types";
 
 export default class ApiHttpClient extends HttpClient {
-  constructor(keys: AccessKeysProps, tokens?: TokensProps) {
+  constructor(
+    keys: { clientId?: string; apiKey?: string },
+    tokens?: { accessToken: string; refreshToken: string }
+  ) {
     super({
       baseURL: constants.ENDPOINT_URL,
       headers: {
