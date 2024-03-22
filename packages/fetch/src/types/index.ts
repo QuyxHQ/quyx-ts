@@ -20,19 +20,26 @@ export type QuyxSIWSProps = {
 export type QuyxResponse<T> = {
   error: boolean;
   statusCode: number;
-  data?: {
+  data: {
     status: boolean;
     message: string;
     data: T;
   };
 };
 
-export type QuyxPaginationResponse<T> = QuyxResponse<T> & {
-  pagination: {
-    page: number;
-    limit: number;
-    skip: number;
-    total: number;
+export type QuyxPaginationResponse<T> = {
+  error: boolean;
+  statusCode: number;
+  data: {
+    status: boolean;
+    message: string;
+    data: T;
+    pagination: {
+      page: number;
+      limit: number;
+      skip: number;
+      total: number;
+    };
   };
 };
 
@@ -44,7 +51,7 @@ export type PagingProps = {
 export type QuyxSDKUser = {
   app: string;
   address: string;
-  card: QuyxCard;
+  card: QuyxCard | null;
   isActive: boolean;
 };
 
