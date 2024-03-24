@@ -1,6 +1,6 @@
 {
   "name": "@quyx/fetch",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": false,
   "description": "Quyx library for interacting with our SDK endpoint",
   "author": "Morifeoluwa Adedeji <momoreoluwaadedeji@gmail.com>",
