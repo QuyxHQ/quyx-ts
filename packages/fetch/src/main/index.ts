@@ -22,9 +22,18 @@ export interface QuyxInterface {
   }: QuyxSIWSProps): Promise<QuyxResponse<{ accessToken: string; refreshToken: string }>>;
   whoami(): Promise<QuyxResponse<QuyxSDKUser>>;
   cards({ limit, page }: PagingProps): Promise<QuyxPaginationResponse<QuyxCard[]>>;
-  import({ _id }: { _id: string }): Promise<QuyxResponse<undefined>>;
+  import({
+    _id,
+    filterSpam,
+  }: {
+    _id: string;
+    filterSpam?: boolean;
+  }): Promise<QuyxResponse<undefined>>;
   findUser({ param }: { param: string }): Promise<QuyxResponse<QuyxSDKUser>>;
-  allUsers(options?: Required<PagingProps>): Promise<QuyxPaginationResponse<QuyxSDKUser[]>>;
+  allUsers(
+    filterSpam?: boolean,
+    options?: Required<PagingProps>
+  ): Promise<QuyxPaginationResponse<QuyxSDKUser[]>>;
   disconnect(): Promise<QuyxResponse<undefined>>;
   logout(): Promise<QuyxResponse<undefined>>;
 }
@@ -106,8 +115,8 @@ export class Quyx implements QuyxInterface {
     return resp as Promise<QuyxPaginationResponse<QuyxCard[]>>;
   }
 
-  async import({ _id }: { _id: string }) {
-    const resp = await this.apiSdk.getInstance().put(`/sdk/change/${_id}`);
+  async import({ _id, filterSpam = false }: { _id: string; filterSpam?: boolean }) {
+    const resp = await this.apiSdk.getInstance().put(`/sdk/change/${_id}`, { filterSpam });
     return resp as Promise<QuyxResponse<undefined>>;
   }
 
@@ -118,11 +127,13 @@ export class Quyx implements QuyxInterface {
     return resp as Promise<QuyxResponse<QuyxSDKUser>>;
   }
 
-  async allUsers(options?: Required<PagingProps>) {
+  async allUsers(filterSpam = false, options?: Required<PagingProps>) {
     if (!this.keys.apiKey) throw new Error("apiKey is needed to access this route");
 
     let endpoint = `/sdk/users/all`;
-    if (options) endpoint = `/sdk/users/all?page=${options.page}&limit=${options.limit}`;
+    if (options) {
+      endpoint = `/sdk/users/all?page=${options.page}&limit=${options.limit}&filterSpam=${filterSpam}`;
+    }
 
     const resp = await this.apiSdk.getInstance().get(endpoint);
     return resp as Promise<QuyxPaginationResponse<QuyxSDKUser[]>>;

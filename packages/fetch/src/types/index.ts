@@ -57,13 +57,13 @@ export type QuyxSDKUser = {
 
 export type QuyxCard = Base & {
   owner: string;
-  identifier: null | number;
-  chainId: string;
+  identifier: string | null;
   username: string;
   pfp: string;
   bio: string;
   description: string | null;
   isForSale: boolean;
+  isFlagged: boolean;
 };
 
 export type QuyxApp = Base & {

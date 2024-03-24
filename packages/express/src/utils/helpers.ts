@@ -59,11 +59,11 @@ function injectQuyx({ apiKey, req }: { apiKey: string; req: Request }): Injected
       return resp;
     },
 
-    import: async function ({ _id }) {
+    import: async function ({ _id, filterSpam = false }) {
       const { accessToken, refreshToken } = getAccessAndRefreshToken(req);
 
       const quyx = new Quyx({ apiKey, accessToken, refreshToken });
-      const resp = quyx.import({ _id });
+      const resp = quyx.import({ _id, filterSpam });
       return resp;
     },
 
@@ -73,9 +73,9 @@ function injectQuyx({ apiKey, req }: { apiKey: string; req: Request }): Injected
       return resp;
     },
 
-    allUsers: async function (options) {
+    allUsers: async function (filterSpam = false, options) {
       const quyx = new Quyx({ apiKey });
-      const resp = await quyx.allUsers(options);
+      const resp = await quyx.allUsers(filterSpam, options);
       return resp;
     },
 
