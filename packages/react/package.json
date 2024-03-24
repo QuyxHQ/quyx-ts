@@ -1,7 +1,7 @@
 {
   "name": "@quyx/react",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "description": "Quyx react SDK",
   "author": "Morifeoluwa Adedeji <momoreoluwaadedeji@gmail.com>",
   "homepage": "https://github.com/QuyxHQ/quyx-ts#readme",
