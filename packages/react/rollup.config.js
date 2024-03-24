@@ -5,6 +5,8 @@ import dts from "rollup-plugin-dts";
 import terser from "@rollup/plugin-terser";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
+import image from "rollup-plugin-img";
+import json from "@rollup/plugin-json";
 
 const packageJson = require("./package.json");
 
@@ -18,7 +20,9 @@ export default [
         sourcemap: true,
       },
     ],
+    inlineDynamicImports: true,
     plugins: [
+      image({ limit: 10000 }),
       postcss({
         config: {
           path: "./postcss.config.cjs",
@@ -28,6 +32,7 @@ export default [
         inject: { insertAt: "top" },
       }),
       typescript(),
+      json(),
       peerDepsExternal(),
       resolve(),
       commonjs(),
