@@ -1,6 +1,6 @@
 {
   "name": "@quyx/react",
-  "version": "0.0.0",
+  "version": "0.1.9",
   "private": false,
   "description": "Quyx react SDK",
   "author": "Morifeoluwa Adedeji <momoreoluwaadedeji@gmail.com>",
@@ -37,8 +37,8 @@
   },
   "dependencies": {
     "@mantine/hooks": "^7.6.2",
-    "@quyx/fetch": "*",
-    "@quyx/siws": "*",
+    "@quyx/fetch": "^0.1.9",
+    "@quyx/siws": "^0.1.9",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-wallets": "^0.19.32",
