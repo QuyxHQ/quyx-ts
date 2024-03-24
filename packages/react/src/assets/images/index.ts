@@ -1,3 +1,3 @@
-const userImage = require("./default-user.png");
+import userImage from "./default-user.png";
 
 export { userImage };

@@ -1,17 +1,21 @@
 {
   "name": "@quyx/react",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "private": false,
   "description": "Quyx react SDK",
   "author": "Morifeoluwa Adedeji <momoreoluwaadedeji@gmail.com>",
   "homepage": "https://github.com/QuyxHQ/quyx-ts#readme",
-  "license": "ISC",
-  "types": "dist/index.d.ts",
-  "main": "dist/cjs/index.js",
+  "license": "Apache-2.0",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/cjs/index.js",
   "publishConfig": {
     "access": "public"
   },
   "exports": {
+    ".": {
+      "default": "./dist/cjs/index.js",
+      "types": "./dist/index.d.ts"
+    },
     "./package.json": "./package.json"
   },
   "files": [
