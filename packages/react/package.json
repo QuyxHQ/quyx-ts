@@ -8,6 +8,9 @@
   "license": "ISC",
   "types": "dist/index.d.ts",
   "main": "dist/cjs/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     "./package.json": "./package.json"
   },
@@ -68,5 +71,6 @@
   "peerDependencies": {
     "@solana/web3.js": "^1.91.1",
     "react": "^18.0.0"
-  }
+  },
+  "gitHead": "7711febedda816a113afc492e0567f632e03ac3c"
 }
